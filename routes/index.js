@@ -1,18 +1,19 @@
 var express = require('express');
 var router = express.Router();
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
+const catchAsync = require('../utils/catchAsync');
+const {getRegister, postRegister} = require("../controllers");
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
   res.render('index', { title: 'Express' });
 });
 
-router.get("/register", (req, res, next) => {
-  res.send("GET /register");
-})
+router.get("/register", getRegister);
 
-router.post("/register", (req, res, next) => {
-  res.send("POST /register");
-})
+router.post("/register", upload.single('image'), catchAsync(postRegister))
 
 router.get("/login", (req, res, next) => {
   res.send("GET /login");
