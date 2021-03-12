@@ -4,7 +4,7 @@ const multer = require('multer');
 const { storage } = require('../cloudinary');
 const upload = multer({ storage });
 const catchAsync = require('../utils/catchAsync');
-const {getRegister, postRegister, getLogin, postLogin, getLogout, getForgotPw, postForgotPw} = require("../controllers");
+const {getRegister, postRegister, getLogin, postLogin, getLogout, getForgotPw, postForgotPw, getReset, putReset} = require("../controllers");
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
@@ -33,12 +33,8 @@ router.get("/forgot", getForgotPw)
 
 router.post("/forgot", catchAsync(postForgotPw));
 
-router.get("/reset/:token", (req, res, next) => {
-  res.send("GET /reset/:token");
-})
+router.get("/reset/:token", catchAsync(getReset));
 
-router.put("/reset/:token", (req, res, next) => {
-  res.send("PUT /reset/:token");
-})
+router.put("/reset/:token", catchAsync(putReset));
 
 module.exports = router;

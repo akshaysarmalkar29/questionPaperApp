@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const ejsMate = require('ejs-mate');
 const session = require('express-session');
+const methodOverride = require('method-override');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const mongoose = require("mongoose");
@@ -43,6 +44,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 const sessionConfig = {
   name: 'session',
