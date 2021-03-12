@@ -30,7 +30,9 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    avatar: ImageSchema
+    avatar: ImageSchema,
+    resetPasswordToken: String,
+	resetPasswordExpires: Date
 });
 
 UserSchema.plugin(passportLocalMongoose, {
