@@ -33,5 +33,26 @@ module.exports = {
           }
           res.render('register', { title: 'Register', email, first, last, code, error });
         }
-      }
+      },
+      getLogin(req, res, next) {
+        if (req.isAuthenticated()) return res.redirect('/');
+        if (req.query.returnTo) req.session.redirectTo = req.headers.referer;
+        res.render('login', { title: 'Login' });
+      },
+      async postLogin(req, res, next) {
+        const { email, password } = req.body;
+        const { user, error } = await User.authenticate()(email, password);
+        if (!user && error) return next(error);
+        req.login(user, function(err) {
+          if (err) return next(err);
+          req.session.success = `Welcome back, ${user.first} ${user.last}!`;
+          const redirectUrl = req.session.redirectTo || '/';
+          delete req.session.redirectTo;
+          res.redirect(redirectUrl);
+        });
+      },
+      getLogout(req, res, next) {
+        req.logout();
+        res.redirect('/');
+      },
 }
