@@ -1,0 +1,12 @@
+<% layout('layouts/boilerplate')%>
+
+<% for (let sub of subjects) { %>
+    <li><a href="/admin/subjects/<%= sub._id %>"><%= sub.title %></a></li>
+<% } %>
+
+<form action="/admin" method="post">
+    <input type="text" name="subject[title]" placeholder="Subject Title" />
+    <input type="number" name="subject[maxMarks]" placeholder="Max Marks" />
+    <input type="number" name="subject[totalMarks]" placeholder="Total Marks" />
+    <button type="submit">Submit</button>
+</form>

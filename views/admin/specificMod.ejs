@@ -1,0 +1,10 @@
+<% layout('layouts/boilerplate')%>
+
+<% for (let question of module.questions) { %>
+    <li><%= question.title %></li>
+<% } %>
+
+<form action="/admin/subjects/<%= subject._id %>/modules/<%= module._id %>/questions" method="post">
+    <input type="title" name="question[title]" placeholder="title">
+    <button>Submit</button>
+</form>

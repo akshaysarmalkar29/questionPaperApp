@@ -1,0 +1,6 @@
+<% layout('layouts/boilerplate')%>
+
+<h1>Hello</h1>
+<% for (let subject of subjects) { %>
+    <a href="/subjects/<%=subject._id%>/patterns"><%= subject.title %></a>
+<% } %>
