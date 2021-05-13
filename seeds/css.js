@@ -25,7 +25,7 @@ const subModules = [
         marks: 25
     },
     {
-        title: "Basic of Cryptography",
+        title: "Basics of Cryptography",
         marks: 30
     },
     {
@@ -33,7 +33,7 @@ const subModules = [
         marks: 30
     },
     {
-        title: "Authentication Application",
+        title: "Authentication Applications",
         marks: 25
     },
     {
@@ -313,13 +313,6 @@ const seedDB = async function() {
         sub.modules.push(newModule);
         await newModule.save();
         await sub.save();
-
-        // for(let i = 0; i < 15; i++) {
-        //     const newQuestion = new Question({title: faker.lorem.sentence(), module: newModule._id});
-        //     newModule.questions.push(newQuestion);
-        //     await newModule.save();
-        //     await newQuestion.save();
-        // }
     }
 
     for(let q of subQuestions) {

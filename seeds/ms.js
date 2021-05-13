@@ -37,7 +37,7 @@ const subModules = [
         marks: 30
     },
     {
-        title: "Pentium Processor",
+        title: "Pentium Procressor",
         marks: 40
     },
     {
