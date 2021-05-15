@@ -2,6 +2,11 @@
 
 <% for (let module of subject.modules) { %>
     <li><a href="/admin/subjects/<%= subject._id %>/modules/<%= module._id %>"><%= module.title %></a></li>
+    <form action="/admin/subjects/<%= subject._id %>/modules/<%= module._id %>?_method=PUT" method="post">
+        <input type="text" name="module[title]" value="<%= module.title %>"  />
+        <input type="number" name="module[marks]" value="<%= module.marks %>" />
+        <button type="submit">Update</button>
+    </form>
 <% } %>
 
 <form action="/admin/subjects/<%= subject._id %>/modules" method="post">

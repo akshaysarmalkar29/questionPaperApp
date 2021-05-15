@@ -15,4 +15,15 @@ const subjectModel = new Schema({
     totalMarks: Number
 });
 
+subjectModel.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Module.deleteMany({
+            _id: {
+                $in: doc.modules
+            }
+        })
+    }
+})
+
+
 module.exports = mongoose.model("Subject", subjectModel);

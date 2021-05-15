@@ -1,7 +1,17 @@
 <% layout('layouts/boilerplate')%>
 
 <% for (let question of module.questions) { %>
-    <li><%= question.title %></li>
+    <div>
+        <li><%= question.title %></li>
+        <form action="/admin/subjects/<%= subject._id %>/modules/<%= module._id %>/questions/<%= question._id %>?_method=PUT" method="post">
+            <input type="title" name="question[title]" value="<%= question.title %>">
+            <button>Submit</button>
+        </form>
+        <form action="/admin/subjects/<%= subject._id %>/modules/<%= module._id %>/questions/<%= question._id %>?_method=DELETE" method="post">
+           <button>Delete</button>
+        </form>
+    </div>
+
 <% } %>
 
 <form action="/admin/subjects/<%= subject._id %>/modules/<%= module._id %>/questions" method="post">

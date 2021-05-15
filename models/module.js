@@ -15,4 +15,14 @@ const moduleModel = new Schema({
     numOfQuestions: Number
 });
 
+moduleModel.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Question.deleteMany({
+            _id: {
+                $in: doc.questions
+            }
+        })
+    }
+})
+
 module.exports = mongoose.model("Module", moduleModel);

@@ -2,6 +2,12 @@
 
 <% for (let sub of subjects) { %>
     <li><a href="/admin/subjects/<%= sub._id %>"><%= sub.title %></a></li>
+    <form action="/admin/subjects/<%= sub._id %>?_method=PUT" method="post">
+        <input type="text" name="subject[title]" value="<%= sub.title %>" />
+        <input type="number" name="subject[maxMarks]" value="<%= sub.maxMarks %>" />
+        <input type="number" name="subject[totalMarks]" value="<%= sub.totalMarks %>" />
+        <button type="submit">Update</button>
+    </form>
 <% } %>
 
 <form action="/admin" method="post">
