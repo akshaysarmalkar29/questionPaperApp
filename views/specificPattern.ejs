@@ -1,0 +1,45 @@
+<% layout('layouts/boilerplate')%>
+
+<form action="/subjects/<%= subject._id %>/patterns/<%= patternId %>/generate" method="POST">
+    <% for (let module of subject.modules) { %>
+        <div>
+            <input type="checkbox" name="portion[]" id="<%= module.title %>" value="<%= module._id %>" checked />
+            <label for="<%= module.title %>"><%= module.title %></label>
+        </div>
+    <% } %>
+
+    <div>
+        <p>Do you want to customise paper?</p>
+        <input type="radio" name="customise" id="yes" value="yes" />
+        <label for="yes">Yes</label>
+        <input type="radio" name="customise" id="no" value="no" checked />
+        <label for="no">No</label>
+    </div>
+
+    <div id="hide" class="d-none">
+        <% for (let module of subject.modules) { %>
+            <div>
+                <input type="number" name="marks[<%= module.title %>]" id="<%= module._id %>"  checked />
+                <label for="<%= module._id %>"><%= module.title %></label>
+            </div>
+        <% } %>
+    </div>
+
+    <button>Submit</button>
+</form>
+
+<script>
+    const btns = document.querySelectorAll("input[type=radio]");
+    const yesBtn = document.querySelector("#yes");
+    const divHide = document.getElementById("hide");
+    for(let btn of btns) {
+        btn.addEventListener("input", function() {
+        console.log(yesBtn.checked);
+        if(yesBtn.checked) {
+            divHide.classList.remove("d-none");
+        } else {
+            divHide.classList.add("d-none");
+        }
+    })
+    }
+</script>
