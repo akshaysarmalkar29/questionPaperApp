@@ -28,7 +28,8 @@ module.exports = {
         res.render("specificPattern", {subject, patternId});
     },
     async generatePaper(req, res, next) {
-        const {subjectId, patternId, customise} = req.params;
+        const {subjectId, patternId} = req.params;
+        const {customise} = req.body;
         const subject = await Subject.findById(subjectId);
         if(customise === "no") {
             const {portion} = req.body;
@@ -50,7 +51,6 @@ module.exports = {
             const {sets} = pattern;
             for(let j = 0; j < sets.length; j++) {
                 const set = sets[j];
-                console.log(set);
                 let sliceArr = refArr.slice();
                 let markDeduct = Math.floor(set.marks / set.questionsToAttempt);
                 for(let k = 0; k < set.totalQuestions; k++) {
@@ -73,12 +73,11 @@ module.exports = {
                 }
                 sliceArr = refArr.slice();
             }
-            console.log(questions);
-            res.render("paper", {questions});
-            ejs.renderFile(path.join(__dirname, './views/', "paper.ejs"), {
+            ejs.renderFile(path.join(__dirname, '../views/', "paper.ejs"), {
                 questions: questions
             }, (err, data) => {
                 if (err) {
+                    console.log(err);
                     res.send(err);
                 } else {
                     let options = {
@@ -94,9 +93,11 @@ module.exports = {
                     };
                     pdf.create(data, options).toFile("questionPaper.pdf", function (err, data) {
                         if (err) {
+                            console.log("Here");
                             res.send(err);
                         } else {
-                            let pathToAttachment = `${__dirname}/questionPaper.pdf`;
+                            console.log(__dirname);
+                            let pathToAttachment = `${__dirname}/../questionPaper.pdf`;
                             let attachment = fs.readFileSync(pathToAttachment).toString("base64");
                             const msg = {
                             to: 'akshaysarmalkar29@gmail.com',
@@ -115,6 +116,7 @@ module.exports = {
                             sgMail.send(msg).catch(err => {
                             console.log(err);
                             });
+                            res.send("File created successfully");
                         }
                     });
                 }
@@ -132,7 +134,6 @@ module.exports = {
                 }
             }).exec();
 
-            console.log(req.body);
             const {marks} = req.body;
             for(let key in marks) {
                 if(marks[key]) {
@@ -175,12 +176,11 @@ module.exports = {
                 }
                 sliceArr = refArr.slice();
             }
-            console.log(questions);
-            res.render("paper", {questions});
-            ejs.renderFile(path.join(__dirname, './views/', "paper.ejs"), {
+            ejs.renderFile(path.join(__dirname, '../views/', "paper.ejs"), {
                 questions: questions
             }, (err, data) => {
                 if (err) {
+                    console.log(err);
                     res.send(err);
                 } else {
                     let options = {
@@ -196,9 +196,11 @@ module.exports = {
                     };
                     pdf.create(data, options).toFile("questionPaper.pdf", function (err, data) {
                         if (err) {
+                            console.log("Here");
                             res.send(err);
                         } else {
-                            let pathToAttachment = `${__dirname}/questionPaper.pdf`;
+                            console.log(__dirname);
+                            let pathToAttachment = `${__dirname}/../questionPaper.pdf`;
                             let attachment = fs.readFileSync(pathToAttachment).toString("base64");
                             const msg = {
                             to: 'akshaysarmalkar29@gmail.com',
@@ -217,6 +219,7 @@ module.exports = {
                             sgMail.send(msg).catch(err => {
                             console.log(err);
                             });
+                            res.send("File created successfully");
                         }
                     });
                 }
