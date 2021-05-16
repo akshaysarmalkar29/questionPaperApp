@@ -1,4 +1,8 @@
 
-<% for (let question of questions) { %>
-    <p><%= question.title %></p>
+
+<% for (let i = 0; i < questions.length; i++) {  %>
+    <h2><%= i+1  %> <%= questions[i].title %></h2>
+    <% for (let j = 0; j < questions[i].ques.length; j++) { %>
+        <p><%= j + 1 %> <%= questions[i].ques[j].title %></p>
+    <% } %>
 <% } %>

@@ -70,11 +70,23 @@ module.exports = {
             for(let i = 0; i < modules.length; i++) {
                 refArr.push(i);
             }
+            for(let m = 0; m < pattern.sets.length; m++) {
+                questions.push({
+                    title: undefined,
+                    ques: []
+                })
+            }
             const {sets} = pattern;
             for(let j = 0; j < sets.length; j++) {
                 const set = sets[j];
                 let sliceArr = refArr.slice();
                 let markDeduct = Math.floor(set.marks / set.questionsToAttempt);
+                if(set.questionsToAttempt === set.totalQuestions) {
+                    questions[j].title = "Attempt All";
+                } else {
+                    questions[j].title = `Attempt any ${set.questionsToAttempt} from ${set.totalQuestions}`;
+                }
+               
                 for(let k = 0; k < set.totalQuestions; k++) {
                     const randNum = Math.floor(Math.random() * sliceArr.length);
                     const curModule = modules[sliceArr[randNum]];
@@ -84,7 +96,8 @@ module.exports = {
                         curModule.questions.splice(randIdx, 1);
                         curModule.marks-=markDeduct;
                         sliceArr.splice(randNum, 1);
-                        questions.push({title: newQuestion.title, module: newQuestion.module.title});
+                        // questions.push({title: newQuestion.title, module: newQuestion.module.title});
+                        questions[j].ques.push({title: newQuestion.title, module: newQuestion.module.title});
                     } else {
                         k--;
                         sliceArr.splice(randNum, 1);
@@ -173,10 +186,21 @@ module.exports = {
             for(let i = 0; i < modules.length; i++) {
                 refArr.push(i);
             }
+            for(let m = 0; m < pattern.sets.length; m++) {
+                questions.push({
+                    title: undefined,
+                    ques: []
+                })
+            }
             const {sets} = pattern;
             for(let j = 0; j < sets.length; j++) {
                 const set = sets[j];
                 console.log(set);
+                if(set.questionsToAttempt === set.totalQuestions) {
+                    questions[j].title = "Attempt All";
+                } else {
+                    questions[j].title = `Attempt any ${set.questionsToAttempt} from ${set.totalQuestions}`;
+                }
                 let sliceArr = refArr.slice();
                 for(let k = 0; k < set.totalQuestions; k++) {
                     const randNum = Math.floor(Math.random() * sliceArr.length);
@@ -186,7 +210,8 @@ module.exports = {
                         let newQuestion = curModule.questions[randIdx];
                         curModule.questions.splice(randIdx, 1);
                         sliceArr.splice(randNum, 1);
-                        questions.push({title: newQuestion.title, module: newQuestion.module.title});
+                        // questions.push({title: newQuestion.title, module: newQuestion.module.title});
+                        questions[j].ques.push({title: newQuestion.title, module: newQuestion.module.title});
                         curModule.numOfQuestions--;
                     } else {
                         k--;
