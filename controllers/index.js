@@ -21,6 +21,10 @@ module.exports = {
             req.body.avatar = { url, filename };
           }
           const user = await User.register(new User(req.body), req.body.password);
+          if(req.body.code === "secret123") {
+            user.isAdmin = true;
+            await user.save();
+          }
           req.login(user, function(err) {
             if (err) return next(err);
             req.session.success = `Welcome to QP Maker, ${user.first} ${user.last}!`

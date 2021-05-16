@@ -7,6 +7,16 @@ const ImageSchema = new Schema({
     filename: String
 });
 
+const notificationSchema = new Schema({
+    subject: {
+        type: Schema.Types.ObjectId,
+        ref: 'Subject'
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
+})
 
 const UserSchema = new Schema({
     email: {
@@ -32,7 +42,12 @@ const UserSchema = new Schema({
     },
     avatar: ImageSchema,
     resetPasswordToken: String,
-	resetPasswordExpires: Date
+	resetPasswordExpires: Date,
+    notifications: [notificationSchema],
+    subjects: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Subject'
+    }]
 });
 
 UserSchema.plugin(passportLocalMongoose, {

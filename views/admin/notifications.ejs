@@ -1,0 +1,17 @@
+<% layout('layouts/boilerplate')%>
+
+<% for (let noti of user.notifications) { %>
+    <div>
+        <p>Is <%= noti.user.first %> <%= noti.user.last %> teaching <%= noti.subject.title %>?</p>
+        <form action="/admin/accept" method="POST">
+            <input class="d-none" type="text" name="user" value="<%= noti.user._id %>">
+            <input class="d-none" type="text" name="subject" value="<%= noti.subject._id %>" >
+            <button>Accept</button>
+        </form>
+        <form action="/admin/decline" method="POST">
+            <input class="d-none" type="text" name="user" value="<%= noti.user._id %>">
+            <input class="d-none" type="text" name="subject" value="<%= noti.subject._id %>" >
+            <button>Decline</button>
+        </form>
+    </div>
+<% } %>

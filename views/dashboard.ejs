@@ -1,6 +1,32 @@
 <% layout('layouts/boilerplate')%>
 
 <h1>Hello</h1>
-<% for (let subject of subjects) { %>
+<% for (let subject of userSubjects) { %>
     <a href="/subjects/<%=subject._id%>/patterns"><%= subject.title %></a>
 <% } %>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add new Subject</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/subjects" method="POST">
+            <select name="subject">
+                <% for (let sub of subjects) { %>
+                    <option val="<%= sub._id %>"><%= sub.title %></option>
+                <% } %>
+            </select>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

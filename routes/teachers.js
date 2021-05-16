@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const {getDashboard, getPatterns, getSpecificPattern, generatePaper} = require("../controllers/teachers");
+const {getDashboard, getPatterns, getSpecificPattern, generatePaper, addNewSub} = require("../controllers/teachers");
+const {isLoggedIn, isTeacher} = require("../middleware");
 
-router.get("/", catchAsync(getDashboard));
+router.get("/", isLoggedIn, catchAsync(getDashboard));
 
-router.get("/:subjectId/patterns", catchAsync(getPatterns));
+router.post("/", isLoggedIn, catchAsync(addNewSub));
 
-router.get("/:subjectId/patterns/:patternId", catchAsync(getSpecificPattern));
+router.get("/:subjectId/patterns", isLoggedIn, isTeacher, catchAsync(getPatterns));
 
-router.post("/:subjectId/patterns/:patternId/generate", catchAsync(generatePaper));
+router.get("/:subjectId/patterns/:patternId", isLoggedIn, isTeacher, catchAsync(getSpecificPattern));
+
+router.post("/:subjectId/patterns/:patternId/generate", isLoggedIn, isTeacher, catchAsync(generatePaper));
 
 module.exports = router;

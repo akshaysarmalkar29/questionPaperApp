@@ -1,8 +1,72 @@
 const Question = require("../models/question");
 const Subject = require("../models/subject");
 const Module = require("../models/module");
+const User = require("../models/user");
 
 module.exports = {
+    async getNotifications(req, res, next) {
+        const user = await User.findById(req.user._id).populate({
+            path: 'notifications',
+            populate: [{
+                path: 'subject',
+                model: 'Subject'
+            }, {
+                path: 'user',
+                model: 'User'
+            }]
+        });
+        res.render("admin/notifications", {user});
+    },
+    async acceptUser(req, res, next) {
+        const {user, subject} = req.body;
+        const sub = await Subject.findById(subject);
+        sub.teachers.push(user);
+        await sub.save();
+        const adminUsers = await User.find({isAdmin: true}).populate({
+            path: 'notifications',
+            populate: [{
+                path: 'subject',
+                model: 'Subject'
+            }, {
+                path: 'user',
+                model: 'User'
+            }]
+        });
+        console.log(adminUsers);
+        for(let u of adminUsers) {
+            console.log(u.notifications);
+            let not = u.notifications.filter(a => {
+                return !(a.user._id.equals(user) && a.subject._id.equals(subject))
+            });
+            u.notifications = not;
+            console.log(u.notifications);
+            await u.save();
+        }
+        res.redirect("/admin/notifications");
+    },
+    async declineUser(req, res, next) {
+        const {user, subject} = req.body;
+        const adminUsers = await User.find({isAdmin: true}).populate({
+            path: 'notifications',
+            populate: [{
+                path: 'subject',
+                model: 'Subject'
+            }, {
+                path: 'user',
+                model: 'User'
+            }]
+        });;
+        for(let u of adminUsers) {
+            console.log(u.notifications);
+            let not = u.notifications.filter(a => {
+                return !(a.user._id.equals(user) && a.subject._id.equals(subject))
+            });
+            u.notifications = not;
+            console.log(u.notifications);
+            await u.save();
+        }
+        res.redirect("/admin/notifications");
+    },
     async getSubjects(req, res, next) {
         const subjects = await Subject.find({});
         res.render("admin/subjects", {subjects});

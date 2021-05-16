@@ -3,6 +3,7 @@ const Pattern = require("../models/pattern");
 const Module = require("../models/module");
 const Set = require("../models/set");
 const Question = require("../models/question");
+const User = require("../models/user");
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const ejs = require("ejs");
@@ -12,8 +13,29 @@ const fs = require("fs");
 
 module.exports = {
     async getDashboard(req, res, next) {
-        const subjects = await Subject.find({});
-        res.render("dashboard", {subjects})
+        const user = await User.findById(req.user._id);
+        const userSubjects = await Subject.find({_id: {
+            $in: user.subjects
+        }});
+        const subjects = await Subject.find({_id: {
+            $nin: user.subjects
+        }});
+        res.render("dashboard", {subjects, userSubjects})
+    },
+    async addNewSub(req, res, next) {
+        const user = req.user;
+        const subject = await Subject.findOne({title: req.body.subject});
+        const adminUsers = await User.find({isAdmin: true});
+        for(let u of adminUsers) {
+            u.notifications.push({
+                user: req.user._id,
+                subject: subject._id
+            });
+            await u.save();
+        }
+        user.subjects.push(subject._id);
+        await user.save();
+        res.redirect("/subjects");
     },
     async getPatterns(req, res, next) {
         const {subjectId} = req.params;
