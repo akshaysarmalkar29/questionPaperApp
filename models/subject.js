@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Module = require('./module');
 
 const subjectModel = new Schema({
     title: String,

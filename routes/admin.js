@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const {getSubjects, createSubject, getOneSub, getOneModule, createModule, createQuestion, updateQuestion, deleteQuestion, updateSubject, updateModule, getNotifications, declineUser, acceptUser} = require("../controllers/admin");
+const {getSubjects, createSubject, getOneSub, getOneModule, createModule, createQuestion, updateQuestion, deleteQuestion, updateSubject, updateModule, getNotifications, declineUser, acceptUser, deleteSubject, deleteModule} = require("../controllers/admin");
 const {isLoggedIn, isAdmin} = require("../middleware");
 
 router.get("/", isLoggedIn, isAdmin, catchAsync(getSubjects));
@@ -18,9 +18,13 @@ router.get("/subjects/:subId", isLoggedIn, isAdmin, catchAsync(getOneSub));
 
 router.put("/subjects/:subId", isLoggedIn, isAdmin, catchAsync(updateSubject));
 
+router.delete("/subjects/:subId", isLoggedIn, isAdmin, catchAsync(deleteSubject));
+
 router.get("/subjects/:subId/modules/:modId", isLoggedIn, isAdmin, catchAsync(getOneModule));
 
 router.put("/subjects/:subId/modules/:modId", isLoggedIn, isAdmin, catchAsync(updateModule));
+
+router.delete("/subjects/:subId/modules/:modId", isLoggedIn, isAdmin, catchAsync(deleteModule));
 
 router.post("/subjects/:subId/modules", isLoggedIn, isAdmin, catchAsync(createModule));
 

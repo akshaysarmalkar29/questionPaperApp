@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Question = require('./question');
 
 const moduleModel = new Schema({
     title: String,
@@ -16,6 +17,16 @@ const moduleModel = new Schema({
 });
 
 moduleModel.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Question.deleteMany({
+            _id: {
+                $in: doc.questions
+            }
+        })
+    }
+})
+
+moduleModel.post('deleteMany', async function (doc) {
     if (doc) {
         await Question.deleteMany({
             _id: {

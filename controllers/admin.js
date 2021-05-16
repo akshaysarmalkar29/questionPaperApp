@@ -86,6 +86,12 @@ module.exports = {
         await Subject.findByIdAndUpdate(subId, req.body.subject);
         res.redirect("/admin")
     },
+    async deleteSubject(req, res, next) {
+        const {subId} = req.params;
+        await Subject.findByIdAndDelete(subId);
+        console.log("Hello");
+        res.redirect("/admin")
+    },
     async getOneModule(req, res, next) {
         const {modId, subId} = req.params;
         const subject = await Subject.findById(subId);
@@ -106,6 +112,12 @@ module.exports = {
     async updateModule(req, res, next) {
         const {modId, subId} = req.params;
         await Module.findByIdAndUpdate(modId, req.body.module);
+        res.redirect(`/admin/subjects/${subId}`);
+    },
+    async deleteModule(req, res, next) {
+        const {modId, subId} = req.params;
+        await Module.findByIdAndDelete(modId);
+        console.log("Hello");
         res.redirect(`/admin/subjects/${subId}`);
     },
     async createQuestion(req, res, next) {
