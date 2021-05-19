@@ -46,8 +46,13 @@ module.exports = {
     },
     async getSpecificPattern(req, res, next) {
         const {subjectId, patternId} = req.params;
+        const pattern = await Pattern.findById(patternId).populate('sets');
+        const maxNumOfQues = pattern.sets.reduce((acc, next) => {
+            return acc + next.totalQuestions;
+        }, 0);
+        console.log(maxNumOfQues);
         const subject = await Subject.findById(subjectId).populate('modules');
-        res.render("specificPattern", {subject, patternId});
+        res.render("specificPattern", {subject, patternId, pattern, maxNumOfQues});
     },
     async generatePaper(req, res, next) {
         const {subjectId, patternId} = req.params;
@@ -135,7 +140,7 @@ module.exports = {
                             let pathToAttachment = `${__dirname}/../questionPaper.pdf`;
                             let attachment = fs.readFileSync(pathToAttachment).toString("base64");
                             const msg = {
-                            to: 'akshaysarmalkar29@gmail.com',
+                            to: req.user.email,
                             from: 'akshaysarmalkar74@gmail.com',
                             subject: `${subject.title} Question Paper`,
                             text: 'Please Check Attachment',
@@ -250,7 +255,7 @@ module.exports = {
                             let pathToAttachment = `${__dirname}/../questionPaper.pdf`;
                             let attachment = fs.readFileSync(pathToAttachment).toString("base64");
                             const msg = {
-                            to: 'akshaysarmalkar29@gmail.com',
+                            to: req.user.email,
                             from: 'akshaysarmalkar74@gmail.com',
                             subject: `${subject.title} Question Paper`,
                             text: 'Please Check Attachment',

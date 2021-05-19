@@ -72,7 +72,7 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  res.locals.title = 'Surf Shop';
+  res.locals.title = 'Question App';
   // set success flash message
   res.locals.success = req.session.success || '';
   delete req.session.success;
@@ -96,7 +96,6 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.error = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
@@ -104,6 +103,7 @@ app.use(function(err, req, res, next) {
   req.session.error = err.message;
   console.log(err);
   res.redirect('back');
+  // res.render("error", {message: err.message});
 });
 
 module.exports = app;

@@ -1,8 +1,9 @@
 <% layout('layouts/boilerplate')%>
 
+<h4 id="alertMessage"></h4>
 <form action="/subjects/<%= subject._id %>/patterns/<%= patternId %>/generate" method="POST">
     <% for (let module of subject.modules) { %>
-        <div>
+        <div class="<%= pattern.maxMarks >= 80  ? 'd-none' : '' %>">
             <input type="checkbox" name="portion[]" id="<%= module.title %>" value="<%= module._id %>" checked />
             <label for="<%= module.title %>"><%= module.title %></label>
         </div>
@@ -19,7 +20,7 @@
     <div id="hide" class="d-none">
         <% for (let module of subject.modules) { %>
             <div>
-                <input type="number" name="marks[<%= module.title %>]" id="<%= module._id %>"  checked />
+                <input type="number" name="marks[<%= module.title %>]" id="<%= module._id %>" max="<%= module.questions.length %>" value="0" />
                 <label for="<%= module._id %>"><%= module.title %></label>
             </div>
         <% } %>
@@ -42,4 +43,46 @@
         }
     })
     }
+
+    const maxQuestions = <%= maxNumOfQues %>;
+    const form = document.querySelector('form');
+    form.addEventListener("submit", function(e) {
+        if(yesBtn.checked) {
+            let sum = 0;
+            const numInputs = document.querySelectorAll("#hide input[type='number']");
+            for(let input of numInputs) {
+                sum+=parseInt(input.value);
+            }
+            console.log(maxQuestions, sum);
+            console.log(typeof maxQuestions, typeof sum);
+            if(maxQuestions !== sum) {
+                e.preventDefault();
+                const alertMessage = document.querySelector("#alertMessage");
+                alertMessage.innerText = `Total Number of Questions should be ${maxQuestions}, currently you have ${sum}`;
+            }
+        }
+    })
+
+    const portionInputs = document.querySelectorAll("input[type='checkbox']");
+    for(let input of portionInputs) {
+        input.addEventListener("input", function(e) {
+            const numInputs = document.querySelectorAll("#hide input[type='number']");
+            for(let ins of portionInputs) {
+                const isChecked = ins.checked;
+                const idNum = ins.getAttribute("id");
+                console.log(idNum);
+                console.log(`input[${idNum}]`);
+                // const output = document.querySelector(`input[${idNum}]`);
+                const output = document.querySelector(`input[name="marks[${idNum}]"]`);
+                const getParent = output.parentElement;
+                if(!isChecked) {
+                    getParent.classList.add("d-none");
+                } else {
+                    getParent.classList.remove("d-none");
+                }
+            }
+        })
+    }
+
+
 </script>
