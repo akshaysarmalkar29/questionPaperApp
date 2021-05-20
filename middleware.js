@@ -1,4 +1,5 @@
 const Subject = require("./models/subject");
+const Pattern = require("./models/pattern");
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -26,4 +27,28 @@ module.exports.isTeacher = async (req, res, next) => {
         return res.redirect('back');
     } 
     next();
+}
+
+module.exports.isValidCustomisePaper = async (req, res, next) => {
+    const {customise, marks} = req.body;
+    if(customise === "yes") {
+        const {patternId} = req.params;
+        const pattern = await Pattern.findById(patternId).populate('sets')
+        const maxNumOfQues = pattern.sets.reduce((acc, next) => {
+            return acc + next.totalQuestions;
+        }, 0);
+        let sum = 0;
+        for(let key in marks) {
+            sum += parseInt(marks[key]);
+        }
+        if(sum === maxNumOfQues) {
+            next();
+        } else {
+            req.session.error = 'You have either inserted more or less questions than required!';
+            res.redirect('/subjects');
+        }
+    } else {
+        next();
+    }
+    
 }

@@ -13,7 +13,9 @@ const subjectModel = new Schema({
         ref: 'User'
     }],
     maxMarks: Number,
-    totalMarks: Number
+    totalMarks: Number,
+    branch: String,
+    semester: Number
 });
 
 subjectModel.post('findOneAndDelete', async function (doc) {

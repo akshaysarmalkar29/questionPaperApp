@@ -20,11 +20,32 @@
     <div id="hide" class="d-none">
         <% for (let module of subject.modules) { %>
             <div>
-                <input type="number" name="marks[<%= module.title %>]" id="<%= module._id %>" max="<%= module.questions.length %>" value="0" />
+                <input type="number" name="marks[<%= module.title %>]" id="<%= module._id %>" max="<%= module.questions.length %>" value="0" min="0" />
                 <label for="<%= module._id %>"><%= module.title %></label>
             </div>
         <% } %>
     </div>
+
+    <% if(pattern.maxMarks === 20) { %>
+        <div>
+            <label for="examDate">Exam Date</label>
+            <input type="date" name="examDate" id="examDate" required />
+        </div>
+        <div>
+            <label for="examType">Select Exam</label>
+            <select name="examType" id="examType" required>
+                <option value="1">IAT 1</option>
+                <option value="2">IAT 2</option>
+            </select>
+        </div>
+    <% } %>
+
+    <% if(pattern.maxMarks === 80) { %>
+        <div>
+            <label for="semExamDate">Exam Date</label>
+            <input type="month" name="semExamDate" id="semExamDate" required />
+        </div>
+    <% } %>
 
     <button>Submit</button>
 </form>

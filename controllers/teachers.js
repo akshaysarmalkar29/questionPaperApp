@@ -55,11 +55,24 @@ module.exports = {
         res.render("specificPattern", {subject, patternId, pattern, maxNumOfQues});
     },
     async generatePaper(req, res, next) {
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const {subjectId, patternId} = req.params;
         const {customise} = req.body;
+        let day;
+        let month;
+        let year;
+        if(req.body.semExamDate) {
+            [year, month] = req.body.semExamDate.split("-");
+            let tempMonth = month;
+            month = monthNames[parseInt(tempMonth) - 1]
+        }
+        if(req.body.examDate) {
+            [year, month, day] = req.body.examDate.split("-");
+        }
         const subject = await Subject.findById(subjectId);
         if(customise === "no") {
             const {portion} = req.body;
+            console.log(req.body);
             const pattern = await Pattern.findById(patternId).populate('sets').exec();
             const modules = await Module.find({_id: {
                 $in: portion
@@ -78,7 +91,8 @@ module.exports = {
             for(let m = 0; m < pattern.sets.length; m++) {
                 questions.push({
                     title: undefined,
-                    ques: []
+                    ques: [],
+                    marks: undefined
                 })
             }
             const {sets} = pattern;
@@ -87,11 +101,11 @@ module.exports = {
                 let sliceArr = refArr.slice();
                 let markDeduct = Math.floor(set.marks / set.questionsToAttempt);
                 if(set.questionsToAttempt === set.totalQuestions) {
-                    questions[j].title = "Attempt All";
+                    questions[j].title = "Attempt the following";
                 } else {
                     questions[j].title = `Attempt any ${set.questionsToAttempt} from ${set.totalQuestions}`;
                 }
-               
+                questions[j].marks = set.marks;
                 for(let k = 0; k < set.totalQuestions; k++) {
                     const randNum = Math.floor(Math.random() * sliceArr.length);
                     const curModule = modules[sliceArr[randNum]];
@@ -113,30 +127,33 @@ module.exports = {
                 }
                 sliceArr = refArr.slice();
             }
+            // res.render("paper", {questions, pattern});
             ejs.renderFile(path.join(__dirname, '../views/', "paper.ejs"), {
-                questions: questions
+                questions: questions,
+                pattern,
+                subject,
+                month,
+                day,
+                year,
+                type: req.body.examType
             }, (err, data) => {
                 if (err) {
                     console.log(err);
                     res.send(err);
                 } else {
+                    let assestPath = path.join(__dirname + "/../public/");
+                    // let assestPath = `${__dirname}/../public/`;
+                    assestPath = assestPath.replace(new RegExp(/\\/g), "/");
                     let options = {
                         "height": "11.25in",
                         "width": "8.5in",
-                        "header": {
-                            "height": "20mm",
-                        },
-                        "footer": {
-                            "height": "20mm",
-                        },
-        
+                        "base": "file:///" + assestPath
                     };
                     pdf.create(data, options).toFile("questionPaper.pdf", function (err, data) {
                         if (err) {
                             console.log("Here");
                             res.send(err);
                         } else {
-                            console.log(__dirname);
                             let pathToAttachment = `${__dirname}/../questionPaper.pdf`;
                             let attachment = fs.readFileSync(pathToAttachment).toString("base64");
                             const msg = {
@@ -153,10 +170,11 @@ module.exports = {
                                 }
                             ]
                             };
-                            sgMail.send(msg).catch(err => {
-                            console.log(err);
-                            });
-                            res.send("File created successfully");
+                            // sgMail.send(msg).catch(err => {
+                            // console.log(err);
+                            // });
+                            req.session.success = `Paper has been sent to ${req.user.email}.`
+                            res.redirect("/subjects");
                         }
                     });
                 }
@@ -194,7 +212,8 @@ module.exports = {
             for(let m = 0; m < pattern.sets.length; m++) {
                 questions.push({
                     title: undefined,
-                    ques: []
+                    ques: [],	
+                    marks: undefined
                 })
             }
             const {sets} = pattern;
@@ -202,10 +221,11 @@ module.exports = {
                 const set = sets[j];
                 console.log(set);
                 if(set.questionsToAttempt === set.totalQuestions) {
-                    questions[j].title = "Attempt All";
+                    questions[j].title = "Attempt the following";
                 } else {
                     questions[j].title = `Attempt any ${set.questionsToAttempt} from ${set.totalQuestions}`;
                 }
+                questions[j].marks = set.marks;
                 let sliceArr = refArr.slice();
                 for(let k = 0; k < set.totalQuestions; k++) {
                     const randNum = Math.floor(Math.random() * sliceArr.length);
@@ -229,22 +249,25 @@ module.exports = {
                 sliceArr = refArr.slice();
             }
             ejs.renderFile(path.join(__dirname, '../views/', "paper.ejs"), {
-                questions: questions
+                questions: questions,	
+                pattern,
+                subject,	
+                month,	
+                day,	
+                year,	
+                type: req.body.examType
             }, (err, data) => {
                 if (err) {
                     console.log(err);
                     res.send(err);
                 } else {
+                    let assestPath = path.join(__dirname + "/../public/");	
+                    // let assestPath = `${__dirname}/../public/`;	
+                    assestPath = assestPath.replace(new RegExp(/\\/g), "/");
                     let options = {
                         "height": "11.25in",
                         "width": "8.5in",
-                        "header": {
-                            "height": "20mm",
-                        },
-                        "footer": {
-                            "height": "20mm",
-                        },
-        
+                        "base": "file:///" + assestPath
                     };
                     pdf.create(data, options).toFile("questionPaper.pdf", function (err, data) {
                         if (err) {
@@ -268,10 +291,11 @@ module.exports = {
                                 }
                             ]
                             };
-                            sgMail.send(msg).catch(err => {
-                            console.log(err);
-                            });
-                            res.send("File created successfully");
+                            // sgMail.send(msg).catch(err => {
+                            // console.log(err);
+                            // });
+                            req.session.success = `Paper has been sent to ${req.user.email}.`
+                            res.redirect("/subjects");
                         }
                     });
                 }

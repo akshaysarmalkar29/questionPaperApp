@@ -311,7 +311,7 @@ const subQuestions = [{
 
 
 const seedDB = async function() {
-    const sub = new Subject({title: "MS", maxMarks: 80, totalMarks: 120});
+    const sub = new Subject({title: "Microprocessor", maxMarks: 80, totalMarks: 120, semester: 5, branch: "Computer"});
     await sub.save();
     for(let module of subModules) {
         const newModule = new Module(module);
