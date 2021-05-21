@@ -1,49 +1,65 @@
 <% layout('layouts/boilerplate')%>
 
-<h4 id="alertMessage"></h4>
+<div class="alert alert-danger fade show d-none" role="alert">
+    <p id="alertMessage"></p>
+</div>
+
+<h2 class="<%= pattern.maxMarks >= 80  ? 'd-none' : '' %> my-3">Select Portion</h2>
+
 <form action="/subjects/<%= subject._id %>/patterns/<%= patternId %>/generate" method="POST">
     <% for (let module of subject.modules) { %>
-        <div class="<%= pattern.maxMarks >= 80  ? 'd-none' : '' %>">
+        <div class="<%= pattern.maxMarks >= 80  ? 'd-none' : '' %> my-1">
             <input type="checkbox" name="portion[]" id="<%= module.title %>" value="<%= module._id %>" checked />
             <label for="<%= module.title %>"><%= module.title %></label>
         </div>
     <% } %>
 
     <div>
-        <p>Do you want to customise paper?</p>
+        <h2 class="my-3">Do you want to customise paper?</h2>
         <input type="radio" name="customise" id="yes" value="yes" />
-        <label for="yes">Yes</label>
+        <label for="yes">Yes</label> <br>
         <input type="radio" name="customise" id="no" value="no" checked />
         <label for="no">No</label>
     </div>
 
     <div id="hide" class="d-none">
+        <h3 class="my-3">Select no. of questions from each module <small class="text-secondary">(Total: <%= maxNumOfQues %>)</small></h3>
         <% for (let module of subject.modules) { %>
-            <div>
-                <input type="number" name="marks[<%= module.title %>]" id="<%= module._id %>" max="<%= module.questions.length %>" value="0" min="0" />
-                <label for="<%= module._id %>"><%= module.title %></label>
+            <div class="col-6">
+                <div class="row my-2">
+                    <div class="col-3">
+                        <input type="number" class="form-control" name="marks[<%= module.title %>]" id="<%= module._id %>" max="<%= module.questions.length %>" value="0" min="0" />
+                    </div>
+                    <div class="col-9">
+                        <label for="<%= module._id %>"><%= module.title %></label>
+                    </div>
+                </div>
             </div>
         <% } %>
     </div>
 
     <% if(pattern.maxMarks === 20) { %>
-        <div>
-            <label for="examDate">Exam Date</label>
-            <input type="date" name="examDate" id="examDate" required />
-        </div>
-        <div>
-            <label for="examType">Select Exam</label>
-            <select name="examType" id="examType" required>
-                <option value="1">IAT 1</option>
-                <option value="2">IAT 2</option>
-            </select>
+        <div class="col-md-6">
+            <div>
+                <label for="examDate" class="mt-2">Exam Date</label>
+                <input type="date" name="examDate" class="form-control my-2" id="examDate" required />
+            </div>
+            <div>
+                <label for="examType">Select Exam</label>
+                <select name="examType" class="form-control my-2" id="examType" required>
+                    <option value="1">IAT 1</option>
+                    <option value="2">IAT 2</option>
+                </select>
+            </div>
         </div>
     <% } %>
 
     <% if(pattern.maxMarks === 80) { %>
         <div>
-            <label for="semExamDate">Exam Date</label>
-            <input type="month" name="semExamDate" id="semExamDate" required />
+            <label for="semExamDate" class="mt-2">Exam Date</label>
+            <div class="col-md-6"> 
+                <input type="month" class="form-control my-2" name="semExamDate" id="semExamDate" required />
+            </div>
         </div>
     <% } %>
 
@@ -80,6 +96,7 @@
                 e.preventDefault();
                 const alertMessage = document.querySelector("#alertMessage");
                 alertMessage.innerText = `Total Number of Questions should be ${maxQuestions}, currently you have ${sum}`;
+                alertMessage.parentElement.classList.remove("d-none");
             }
         }
     })
@@ -95,7 +112,7 @@
                 console.log(`input[${idNum}]`);
                 // const output = document.querySelector(`input[${idNum}]`);
                 const output = document.querySelector(`input[name="marks[${idNum}]"]`);
-                const getParent = output.parentElement;
+                const getParent = output.parentElement.parentElement.parentElement;
                 if(!isChecked) {
                     getParent.classList.add("d-none");
                 } else {

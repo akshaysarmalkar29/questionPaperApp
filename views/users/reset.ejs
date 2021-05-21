@@ -1,33 +1,25 @@
-<% layout('layouts/boilerplate')%>
+<% layout('layouts/common')%>
 <!-- <h2 class="text-center display-4">Register</h2> -->
-<div class="container d-flex justify-content-center align-items-center mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="row">
-                <div class="col-md-6">
-                    <img src="https://images.unsplash.com/photo-1560543685-824b3c5e82ad?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=332&q=80" alt="Student Studying" class="img-fluid">
-                </div>
-                <div class="col-md-6">
-                    <form action="/reset/<%= token %>?_method=PUT" method="POST" class="validated-form" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="confirm">Confirm Password</label>
-                            <input class="form-control" type="password" id="confirm" name="confirm" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <button class="btn btn-dark">Register</button>
-                    </form>
+<div class="row justify-content-center" id="mainContainer">
+    <div class="col-md-10">
+        <%- include('./partials/flash')%>
+        <form action="/reset/<%= token %>?_method=PUT" method="POST" class="validated-form" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <input class="form-control" type="password" id="password" name="password" required>
+                <div class="valid-feedback">
+                    Looks good!
                 </div>
             </div>
-        </div>
+            <div class="mb-3">
+                <label class="form-label" for="confirm">Confirm Password</label>
+                <input class="form-control" type="password" id="confirm" name="confirm" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <button class="btn btn-dark">Register</button>
+        </form>
     </div>
 </div>
 

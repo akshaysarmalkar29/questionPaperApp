@@ -102,8 +102,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   req.session.error = err.message;
   console.log(err);
-  // res.redirect('back');
-  res.render("error", {message: err.message});
+  res.redirect('back');
+  // res.render("error", {message: err.message});
 });
 
 module.exports = app;

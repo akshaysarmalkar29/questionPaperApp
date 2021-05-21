@@ -1,31 +1,41 @@
 <% layout('layouts/boilerplate')%>
 
+<h2 class="my-3">Subjects</h2>
+
+
 <% for (let sub of subjects) { %>
-    <li><a href="/admin/subjects/<%= sub._id %>"><%= sub.title %></a></li>
-    <form action="/admin/subjects/<%= sub._id %>?_method=PUT" method="post">
-        <input type="text" name="subject[title]" value="<%= sub.title %>" />
-        <input type="number" name="subject[maxMarks]" value="<%= sub.maxMarks %>" />
-        <input type="number" name="subject[totalMarks]" value="<%= sub.totalMarks %>" />
-        <input type="number" name="subject[semester]" value="<%= sub.semester %>" min="1" max="8" />
-    <select name="subject[branch]">
-        <option <%= sub.branch === "Computer" ? selected : "" %>>Computer</option>
-        <option <%= sub.branch === "IT" ? selected : "" %>>IT</option>
-    </select>
-        <button type="submit">Update</button>
-    </form>
-    <form action="/admin/subjects/<%= sub._id %>?_method=DELETE" method="post">
-        <button type="submit">Delete</button>
-    </form>
+    <div class="subject-container">
+        <p class="subject-title"><%= sub.title %></p>
+        <div class="btn-container">
+            <a href="/admin/subjects/<%= sub._id %>" class="btn btn-dark">View</a>
+            <form action="/admin/subjects/<%= sub._id %>?_method=DELETE" method="post">
+                <button type="submit" class="btn btn-outline-dark">Delete</button>
+            </form>
+        </div>
+    </div>
 <% } %>
 
-<form action="/admin" method="post">
-    <input type="text" name="subject[title]" placeholder="Subject Title" />
-    <input type="number" name="subject[maxMarks]" placeholder="Max Marks" />
-    <input type="number" name="subject[totalMarks]" placeholder="Total Marks" />
-    <input type="number" name="subject[semester]" placeholder="Total Marks" min="1" max="8" />
-    <select name="subject[branch]">
-        <option>Computer</option>
-        <option>IT</option>
-    </select>
-    <button type="submit">Submit</button>
-</form>
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="my-3">Add New Subject</h2>
+        <form action="/admin" method="post">
+            <input type="text" class="form-control" name="subject[title]" placeholder="Subject Title" />
+            <div class="row my-3">
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="subject[maxMarks]" placeholder="Max Marks" />
+                </div>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="subject[totalMarks]" placeholder="Total Marks" />
+                </div>
+                <div class="col-md-4">
+                    <input type="number" class="form-control" name="subject[semester]" placeholder="Semester" min="1" max="8" />
+                </div>
+            </div>
+            <select class="form-control mb-3" name="subject[branch]">
+                <option>Computer</option>
+                <option>IT</option>
+            </select>
+            <button type="submit" class="btn btn-dark">Submit</button>
+        </form>
+    </div>
+</div>

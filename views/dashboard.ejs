@@ -1,13 +1,24 @@
 <% layout('layouts/boilerplate')%>
 
-<h1>Hello</h1>
-<% for (let subject of userSubjects) { %>
-    <a href="/subjects/<%=subject._id%>/patterns"><%= subject.title %></a>
-<% } %>
+<h2 class="my-3">Subjects</h2>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add Subjects
-  </button>
+<div class="row my-3">
+  <% for (let subject of userSubjects) { %>
+    <div class="col-md-3">
+      <div class="subject p-3">
+        <p class="teacherSubjectTitle"><%= subject.title %></p>
+        <div class="status d-flex justify-content-between">
+          <p>Status</p>
+          <div class="<%= subject.teachers.includes(currentUser._id) ? 'granted' : 'decline' %>"></div>
+        </div>
+        <a href="/subjects/<%=subject._id%>/patterns" class="btn btn-dark">Generate</a>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+
+  <p>Click <b><a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">here</a></b> to add Subjects</p>
 
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -24,7 +35,7 @@
                 <% } %>
             </select>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="submit" class="btn btn-dark">Add</button>
           </form>
         </div>
       </div>

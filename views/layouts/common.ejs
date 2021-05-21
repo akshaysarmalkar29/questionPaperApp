@@ -10,16 +10,22 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/stylesheets/app.css">
+    <link rel="stylesheet" href="/stylesheets/common.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 </head>
 
-<body class="d-flex flex-column vh-100">
+<body>
     <%- include('../partials/navbar')%>
-    <main class="container mt-2">
-        <%- include('../partials/flash')%>
-        <%- body %>
+    <main class="container-fluid px-0">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="https://images.unsplash.com/photo-1557318041-1ce374d55ebf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="Student Studying" class="img-fluid w-100">
+            </div>
+            <div class="col-md-6">
+                <%- body %>
+            </div>
+        </div>
     </main>
 
     
