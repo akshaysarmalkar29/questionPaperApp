@@ -4,6 +4,7 @@
 <div class="row justify-content-center" id="mainContainer">
     <div class="col-md-10">
         <%- include('./partials/flash')%>
+        <h2 class="my-3">Register</h2>
         <form action="/register" method="POST" class="validated-form" novalidate enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6">
@@ -40,13 +41,16 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">Profile Image</label>
-                <div class="form-file custom-file">
+                <!-- <div class="form-file custom-file">
                     <input type="file" class="form-file-input" id="image" name="image">
                     <label class="form-file-label" for="image">
                         <span class="form-file-text custom-file-label">Choose profile image</span>
                         <span class="form-file-button">Browse</span>
                     </label>
+                </div> -->
+                <div>
+                  <label for="image" class="form-label">Profile Image</label>
+                   <input class="form-control" type="file" id="image" name="image">
                 </div>
             </div>
             <!-- <div class="custom-file mx-3 mb-3">

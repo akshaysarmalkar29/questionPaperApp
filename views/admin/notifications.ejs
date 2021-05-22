@@ -1,12 +1,12 @@
 <% layout('layouts/boilerplate')%>
 
-<h2 class="my-3">Notifications</h2>
+<h2 class="my-4">Notifications</h2>
 
 <% for (let noti of user.notifications) { %>
-    <div class="notification">
+    <div class="notification my-3">
         <div class="user-details">
             <img src="<%= noti.user.avatar.url %>" class="user-image"/>
-            <p><%= noti.user.first %> <%= noti.user.last %> wants to generate <%= noti.subject.title %> paper</p>
+            <p><b><%= noti.user.first %> <%= noti.user.last %></b> wants to generate <b><%= noti.subject.title %></b> paper</p>
         </div>
         <div class="forms-container">
             <form action="/admin/accept" method="POST">

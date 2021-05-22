@@ -52,7 +52,13 @@ module.exports = {
         req.login(user, function(err) {
           if (err) return next(err);
           req.session.success = `Welcome back, ${user.first} ${user.last}!`;
-          const redirectUrl = req.session.redirectTo || '/';
+          let redirectTo;
+          if(user.isAdmin) {
+            redirectTo = "/admin";
+          } else {
+            redirectTo = "/subjects"
+          }
+          const redirectUrl = redirectTo || '/';
           delete req.session.redirectTo;
           res.redirect(redirectUrl);
         });

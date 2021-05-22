@@ -3,7 +3,10 @@ const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const ImageSchema = new Schema({
-    url: String,
+    url: {
+        type: String,
+        default: 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'
+    },
     filename: String
 });
 
@@ -40,7 +43,13 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    avatar: ImageSchema,
+    avatar: {
+        url: {
+            type: String,
+            default: 'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'
+        },
+        filename: String
+    },
     resetPasswordToken: String,
 	resetPasswordExpires: Date,
     notifications: [notificationSchema],
