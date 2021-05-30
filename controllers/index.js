@@ -76,7 +76,7 @@ module.exports = {
         const user = await User.findOne({ email });
         if (!user) {
           req.session.error = 'No account with that email.';
-          return res.redirect('/forgot-password');
+          return res.redirect('/forgot');
         }
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000;
@@ -142,7 +142,7 @@ module.exports = {
         const msg = {
           to: user.email,
           from: 'akshaysarmalkar74@gmail.com',
-          subject: 'Surf Shop - Password Changed',
+          subject: 'QP Maker - Password Changed',
           text: `Hello,
           This email is to confirm that the password for your account has just been changed.
           If you did not make this change, please hit reply and notify us at once.`.replace(/     /g, '')

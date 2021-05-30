@@ -170,9 +170,9 @@ module.exports = {
                                 }
                             ]
                             };
-                            // sgMail.send(msg).catch(err => {
-                            // console.log(err);
-                            // });
+                            sgMail.send(msg).catch(err => {
+                            console.log(err);
+                            });
                             req.session.success = `Paper has been sent to ${req.user.email}.`
                             res.redirect("/subjects");
                         }
@@ -291,9 +291,9 @@ module.exports = {
                                 }
                             ]
                             };
-                            // sgMail.send(msg).catch(err => {
-                            // console.log(err);
-                            // });
+                            sgMail.send(msg).catch(err => {
+                            console.log(err);
+                            });
                             req.session.success = `Paper has been sent to ${req.user.email}.`
                             res.redirect("/subjects");
                         }

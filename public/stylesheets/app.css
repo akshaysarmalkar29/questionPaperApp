@@ -96,3 +96,20 @@ p.module-title {
 #alertMessage {
   margin-bottom: 0;
 }
+
+.pattern-img {
+  width: 120px;
+}
+
+.pattern-img-container {
+  padding: 2px;
+  cursor: pointer;
+}
+
+.pattern-img-container-bordered {
+  border: 1px solid #0C161E;
+}
+
+.paper-question {
+  background: #0c161ead;
+}

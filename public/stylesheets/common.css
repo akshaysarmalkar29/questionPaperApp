@@ -21,6 +21,10 @@ nav {
   z-index: 2;
 }
 
+nav a {
+  text-decoration: none;
+}
+
 nav h2 {
   color: white;
 }
@@ -43,4 +47,9 @@ nav h2 {
 
 #mainContainer {
   padding-top: 20vh;
+}
+
+.forgot-link {
+  color: #0C161E;
+  text-decoration: none;
 }
